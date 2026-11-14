@@ -1,0 +1,121 @@
+@import "tailwindcss";
+
+/* Surgery brand tokens. Every colour and font on the site comes from here.
+   Names are generic (brand, accent, glow...) so the palette can change without renaming classes.
+   `static` emits all of these as CSS variables, so component <style> blocks and SVG
+   gradients can use var(--color-...) too, not only Tailwind classes.
+   Contrast (WCAG): brand-ink on white 5.48:1, on page 5.12:1; ink on brand 8.91:1; body on
+   page 9.67:1. accent is 3.85:1 on white, so use it for icons, large headings and gradient
+   ends only, never for small body text. */
+@theme static {
+  /* Deep green-black: dark text and dark sections */
+  --color-ink: #0a1f1c;
+  /* Dark green: gradients, dark buttons and glass panels */
+  --color-deep: #0f3b36;
+  /* Main accent (scrubs green): borders, icons, button fills, and text on dark backgrounds */
+  --color-brand: #34d399;
+  /* Green for text on light backgrounds (brand is too light there) */
+  --color-brand-ink: #047857;
+  /* Warm coral: gradient ends, quote icon */
+  --color-accent: #e0523f;
+  /* Light coral for nodes and lines on dark backgrounds */
+  --color-accent-soft: #fca5a5;
+  /* Mint highlight */
+  --color-glow: #a7f3d0;
+  --color-page: #f4f8f7;
+  --color-body: #334155;
+
+  --font-display: "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-body: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  /* Soft green glow used on hover instead of heavy drop shadows */
+  --shadow-glow: 0 0 0 1px color-mix(in srgb, var(--color-brand) 35%, transparent),
+    0 14px 36px -18px color-mix(in srgb, var(--color-brand) 60%, transparent);
+  --shadow-card: 0 1px 2px rgb(10 31 28 / 0.04), 0 8px 24px -16px rgb(10 31 28 / 0.12);
+
+  --animate-marquee: marquee 50s linear infinite;
+  --animate-fade-up: fade-up 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 0.9s ease-out both;
+  --animate-float: float 6s ease-in-out infinite;
+
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(16px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+      transform: scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* The list is rendered 4 times, so moving by half loops seamlessly */
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+}
+
+/* Dark sections: deep-to-ink gradient with a faint brand-green glow */
+@utility bg-hero-dark {
+  background-color: var(--color-ink);
+  background-image:
+    radial-gradient(ellipse 55% 60% at 85% 20%, color-mix(in srgb, var(--color-brand) 14%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 55% at 5% 95%, color-mix(in srgb, var(--color-brand) 8%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--color-deep), var(--color-ink) 70%);
+}
+
+/* Faint dot grids, faded towards the edges. Put them on an absolute overlay element. */
+@utility dot-grid-dark {
+  background-image: radial-gradient(rgb(255 255 255 / 0.06) 1px, transparent 1px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(ellipse 75% 65% at 50% 45%, black, transparent);
+}
+
+@utility dot-grid-light {
+  background-image: radial-gradient(rgb(10 31 28 / 0.06) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, black, transparent);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+@layer base {
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    color: var(--color-body);
+  }
+}
