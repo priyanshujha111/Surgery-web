@@ -1,4 +1,5 @@
 import { useEffect, useMemo } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link } from 'react-router-dom'
 import { MAIN_SITE_URL, coursesOfType, legalPolicies, mainPages } from '../data/siteLinks.js'
 import { typeLabel, useSurgeryCourses } from '../data/surgeryCourseApi.js'
@@ -128,7 +129,7 @@ function Sitemap() {
   const { status, courses, retry } = useSurgeryCourses()
 
   useEffect(() => {
-    document.title = 'Sitemap | Medical Global Academy'
+    document.title = SITE_TITLE
     window.scrollTo(0, 0)
   }, [])
 
@@ -161,21 +162,7 @@ function Sitemap() {
         />
 
         <div className="relative mx-auto max-w-[1160px] px-4 pt-6 pb-24 sm:px-6 md:pt-10 md:pb-28">
-          <nav aria-label="Breadcrumb">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-300">
-              <li>
-                <Link to="/" className={`hover:text-glow ${focusRing} focus-visible:ring-offset-ink`}>
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page" className="font-medium text-white">
-                Sitemap
-              </li>
-            </ol>
-          </nav>
-
-          <div className="mt-10 flex items-center gap-3 motion-safe:animate-fade-up">
+          <div className="mt-4 flex items-center gap-3 motion-safe:animate-fade-up">
             <span className="h-px w-8 shrink-0 bg-brand sm:w-12" />
             <span className="text-xs font-semibold uppercase tracking-[0.22em] text-brand">Sitemap</span>
           </div>

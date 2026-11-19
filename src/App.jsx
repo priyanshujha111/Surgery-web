@@ -1,6 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import Breadcrumbs from './components/Breadcrumbs'
 import SurgeryHome from './pages/SurgeryHome'
 import About from './pages/About'
 import Course from './pages/Course'
@@ -17,6 +18,8 @@ export default function App() {
   return (
     <div className="flex min-h-screen flex-col bg-white text-slate-900">
       <Navbar />
+      {/* One breadcrumb for every page (hidden on Home); routes live in config/breadcrumbs.js */}
+      <Breadcrumbs />
       {/* flex-1 pushes the footer to the bottom on short pages */}
       <main className="flex-1">
         <Routes>

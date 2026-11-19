@@ -1,5 +1,8 @@
 import { useEffect, useId, useMemo, useState } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { useSearchParams } from 'react-router-dom'
+import { Info } from 'lucide-react'
+import { COURSE_DISCLAIMER_BODY, COURSE_DISCLAIMER_LABEL } from '../constants/disclaimer.js'
 import CourseCard, { CourseCardSkeleton, Icon, StatePanel } from '../components/CourseCard.jsx'
 import { COUNSELLOR_TEL, buttonOutline, buttonPrimary, icons } from '../components/courseUi.js'
 import FaqSection from '../components/FaqSection.jsx'
@@ -22,7 +25,7 @@ function Course() {
   const searchId = useId()
 
   useEffect(() => {
-    document.title = 'Surgery Courses | Medical Global Academy'
+    document.title = SITE_TITLE
   }, [])
 
   const types = useMemo(
@@ -98,6 +101,18 @@ function Course() {
           <h2 id={`${searchId}-heading`} className="sr-only">
             Browse surgery courses
           </h2>
+
+          {/* Course disclaimer (same text as the Footer note), shown once above the list */}
+          <p
+            role="note"
+            className="mb-8 flex items-start gap-2.5 rounded-lg border border-brand/30 bg-brand/5 px-4 py-3 text-sm leading-relaxed text-slate-700"
+          >
+            <Info size={16} strokeWidth={2.25} aria-hidden="true" className="mt-0.5 shrink-0 text-brand-ink" />
+            <span className="min-w-0">
+              <strong className="font-semibold text-brand-ink">{COURSE_DISCLAIMER_LABEL}</strong>{' '}
+              {COURSE_DISCLAIMER_BODY}
+            </span>
+          </p>
 
           {showFilters && (
             <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">

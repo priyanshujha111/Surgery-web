@@ -143,20 +143,35 @@ function reportMatches(list, courses) {
   )
 }
 
-// One request per page load, shared by every page. A failed request is dropped from the cache
-// and the error rethrown, so the caller can show it and a retry fetches again.
+// One request per page load, shared by every page (the surgery course pages and the About
+// page stats both read this raw list). A failed request is dropped from the cache and the
+// error rethrown, so the caller can show it and a retry fetches again.
+let cachedAll = null
+
+export function loadAllCourses({ force = false } = {}) {
+  if (force) cachedAll = null
+  if (!cachedAll) {
+    cachedAll = fetch(API_URL)
+      .then((res) => {
+        if (!res.ok) throw new Error(`Request failed: ${res.status}`)
+        return res.json()
+      })
+      .then((data) => (Array.isArray(data) ? data : data?.data || []))
+      .catch((err) => {
+        cachedAll = null
+        throw err
+      })
+  }
+  return cachedAll
+}
+
 let cached = null
 
 export function loadSurgeryCourses({ force = false } = {}) {
   if (force) cached = null
   if (!cached) {
-    cached = fetch(API_URL)
-      .then((res) => {
-        if (!res.ok) throw new Error(`Request failed: ${res.status}`)
-        return res.json()
-      })
-      .then((data) => {
-        const list = Array.isArray(data) ? data : data?.data || []
+    cached = loadAllCourses({ force })
+      .then((list) => {
         // Top courses first; otherwise keep the API order
         const courses = list
           .filter(isSurgery)

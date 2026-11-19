@@ -1,34 +1,10 @@
 import { Link } from 'react-router-dom'
 import ValuesSection from '../components/ValuesSection.jsx'
+import StatsCounter from '../components/StatsCounter.jsx'
 
 // Gradient text for highlighted words: brand-ink to accent on light backgrounds, brand to glow on dark
 const gradientLight = 'bg-linear-to-r from-brand-ink to-accent bg-clip-text text-transparent'
 const gradientDark = 'bg-linear-to-r from-brand to-glow bg-clip-text text-transparent'
-
-// TODO: verify these company numbers before launch.
-// icon = SVG path(s) drawn on a 24x24 grid (stroke icons)
-const stats = [
-  {
-    icon: 'M6 3v6a4 4 0 008 0V3 M10 13v3a5 5 0 0010 0v-2 M20 14a2 2 0 100-4 2 2 0 000 4z',
-    value: '200+',
-    label: 'Practicing Physicians',
-  },
-  {
-    icon: 'M4 19.5A2.5 2.5 0 016.5 17H20 M4 19.5A2.5 2.5 0 006.5 22H20V2H6.5A2.5 2.5 0 004 4.5v15z',
-    value: '150+',
-    label: 'Specialized Programs',
-  },
-  {
-    icon: 'M6 18h8 M3 22h18 M14 22a7 7 0 100-14h-1 M9 14h2 M9 12a2 2 0 01-2-2V6h6v4a2 2 0 01-2 2z M12 6V3a1 1 0 00-1-1H9a1 1 0 00-1 1v3',
-    value: '25+',
-    label: 'Medical Specializations',
-  },
-  {
-    icon: 'M12 3L2 8l10 5 10-5-10-5z M6 10.5V16c0 1.5 2.7 3 6 3s6-1.5 6-3v-5.5',
-    value: '10K+',
-    label: 'Students Trained',
-  },
-]
 
 // Company-wide specialties (Medical Global Academy teaches all of these); Surgery is listed first on this site.
 const specialties = [
@@ -479,27 +455,8 @@ function About() {
         </div>
       </section>
 
-      {/* 2. Stat strip */}
-      <section className="relative bg-white px-4 pt-16 sm:px-6 md:pt-20">
-        <div className="mx-auto grid max-w-[1140px] grid-cols-2 overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card md:grid-cols-4">
-          {stats.map((stat, i) => (
-            <div
-              key={stat.label}
-              className={`flex flex-col items-center px-4 py-8 text-center md:py-10 ${
-                i % 2 === 0 ? 'border-r border-slate-200' : ''
-              } ${i < 2 ? 'border-b border-slate-200 md:border-b-0' : ''} ${i === 1 ? 'md:border-r' : ''}`}
-            >
-              <span className="text-brand-ink">
-                <Icon path={stat.icon} className="h-6 w-6" />
-              </span>
-              <div className="mt-3 font-display text-4xl font-bold text-brand-ink lining-nums md:text-5xl">
-                {stat.value}
-              </div>
-              <div className="mt-2 text-sm font-medium text-slate-600">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
+      {/* 2. Live programme counts from the course API */}
+      <StatsCounter />
 
       {/* 3. Who we are: visual card on the left (desktop), text on the right */}
       <section className="relative overflow-hidden bg-white py-20 md:py-24">

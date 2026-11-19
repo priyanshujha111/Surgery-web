@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link, useParams } from 'react-router-dom'
 import { DoctorAvatar } from '../components/DoctorCard.jsx'
 import { Icon, StatePanel } from '../components/CourseCard.jsx'
@@ -86,7 +87,7 @@ function DoctorProfile() {
     }
   }, [])
   useEffect(() => {
-    if (doctor) document.title = `${doctor.name} | Medical Global Academy`
+    if (doctor) document.title = SITE_TITLE
   }, [doctor])
 
   useEffect(() => {

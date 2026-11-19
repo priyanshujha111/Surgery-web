@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link } from 'react-router-dom'
 import DoctorCard, { DoctorCardSkeleton } from '../components/DoctorCard.jsx'
 import { Icon, StatePanel } from '../components/CourseCard.jsx'
@@ -67,7 +68,7 @@ function Doctor() {
   const { status, doctors, retry } = useFaculty()
 
   useEffect(() => {
-    document.title = 'Our Doctors | Medical Global Academy'
+    document.title = SITE_TITLE
   }, [])
 
   const ready = status === 'ready'

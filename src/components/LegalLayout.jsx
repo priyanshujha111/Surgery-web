@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link, useLocation } from 'react-router-dom'
 import { legalPolicies } from '../data/siteLinks.js'
 
@@ -40,7 +41,7 @@ function LegalLayout({ title, updated, intro, sections, children }) {
   const [readMinutes, setReadMinutes] = useState(null)
 
   useEffect(() => {
-    document.title = `${title} | Medical Global Academy`
+    document.title = SITE_TITLE
   }, [title])
 
   // Start at the top unless the link points at a section
@@ -77,21 +78,7 @@ function LegalLayout({ title, updated, intro, sections, children }) {
         />
 
         <div className="relative mx-auto max-w-[1160px] px-4 pt-6 pb-14 sm:px-6 md:pt-10 md:pb-20">
-          <nav aria-label="Breadcrumb">
-            <ol className="flex flex-wrap items-center gap-2 text-sm text-slate-300">
-              <li>
-                <Link to="/" className={`hover:text-glow ${focusRing} focus-visible:ring-offset-ink`}>
-                  Home
-                </Link>
-              </li>
-              <li aria-hidden="true">/</li>
-              <li aria-current="page" className="font-medium text-white">
-                {title}
-              </li>
-            </ol>
-          </nav>
-
-          <header className="mt-10 max-w-3xl">
+          <header className="mt-4 max-w-3xl">
             <span className="inline-flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand motion-safe:animate-fade-up">
               <span aria-hidden="true" className="h-px w-8 bg-brand sm:w-12" />
               Legal

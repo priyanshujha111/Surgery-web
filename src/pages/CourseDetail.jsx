@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link, useLocation, useParams } from 'react-router-dom'
 import CourseCard, { Icon, StatePanel } from '../components/CourseCard.jsx'
 import FaqSection from '../components/FaqSection.jsx'
@@ -248,9 +249,7 @@ function CourseDetail() {
   }, [])
   useEffect(() => {
     if (status !== 'ready') return
-    document.title = course
-      ? `${course.title} | Medical Global Academy`
-      : 'Course not found | Medical Global Academy'
+    document.title = SITE_TITLE
   }, [status, course])
 
   // Without #enroll, every course starts at the top (also when switching between courses)

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react'
+import { SITE_TITLE } from '../constants/site.js'
 import { Link, useLocation } from 'react-router-dom'
 import { Icon } from '../components/CourseCard.jsx'
 import { buttonPrimary, focusRing, icons } from '../components/courseUi.js'
@@ -34,7 +35,7 @@ function NotFound() {
   // Page title; restored when leaving the page
   useEffect(() => {
     const previous = originalTitle.current
-    document.title = 'Page not found | Medical Global Academy'
+    document.title = SITE_TITLE
     window.scrollTo(0, 0)
     return () => {
       document.title = previous

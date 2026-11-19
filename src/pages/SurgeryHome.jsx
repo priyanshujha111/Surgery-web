@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import ImageLightbox from '../components/ImageLightbox.jsx'
 import ProtectedImage from '../components/ProtectedImage.jsx'
 import FaqSection from '../components/FaqSection.jsx'
+import { CountUp } from '../components/StatsCounter.jsx'
 import { surgeryFaqs } from '../data/surgeryFaqs.js'
 import DoctorCard, { DoctorCardSkeleton } from '../components/DoctorCard.jsx'
 import { FACULTY_CONFIRMED, useFaculty } from '../data/facultyApi.js'
@@ -702,35 +703,6 @@ function HeroVisual() {
         </div>
       ))}
     </div>
-  )
-}
-
-function CountUp({ end, suffix, start }) {
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    if (!start) return
-    const duration = 1800
-    let startTime = null
-    let frame
-
-    const tick = (time) => {
-      if (startTime === null) startTime = time
-      const progress = Math.min((time - startTime) / duration, 1)
-      const eased = 1 - Math.pow(1 - progress, 3)
-      setCount(Math.round(eased * end))
-      if (progress < 1) frame = requestAnimationFrame(tick)
-    }
-
-    frame = requestAnimationFrame(tick)
-    return () => cancelAnimationFrame(frame)
-  }, [start, end])
-
-  return (
-    <>
-      {count.toLocaleString('en-US')}
-      {suffix}
-    </>
   )
 }
 
