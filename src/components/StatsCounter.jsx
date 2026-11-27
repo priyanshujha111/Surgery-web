@@ -60,7 +60,8 @@ function SkeletonCard() {
   )
 }
 
-function StatsCounter() {
+// `footnote`: optional small accent line shown under the stat cards
+function StatsCounter({ footnote }) {
   const { stats, loading } = useCourseStats()
   const sectionRef = useRef(null)
   const [instant] = useState(() => hasAnimated || prefersReducedMotion())
@@ -141,6 +142,14 @@ function StatsCounter() {
                 </div>
               ))}
         </div>
+
+        {footnote && (
+          <p className="mt-8 flex items-center justify-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-brand">
+            <span aria-hidden="true" className="h-px w-8 bg-brand/50" />
+            {footnote}
+            <span aria-hidden="true" className="h-px w-8 bg-brand/50" />
+          </p>
+        )}
       </div>
     </section>
   )

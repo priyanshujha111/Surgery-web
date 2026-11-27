@@ -21,6 +21,7 @@ export const breadcrumbRoutes = [
   { path: '/courses/:slug', dynamic: 'course', parent: '/courses', width: 'max-w-6xl' },
   { path: '/doctor', label: 'Doctors', parent: '/', theme: 'light' },
   { path: '/doctor/:id', dynamic: 'doctor', parent: '/doctor' },
+  { path: '/contact', label: 'Contact', parent: '/', width: 'max-w-[1140px]' },
   { path: '/terms', label: 'Terms & Conditions', parent: '/' },
   { path: '/privacy', label: 'Privacy Policy', parent: '/' },
   { path: '/refund', label: 'Refund Policy', parent: '/' },

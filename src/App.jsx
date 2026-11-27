@@ -4,6 +4,7 @@ import Footer from './components/Footer'
 import Breadcrumbs from './components/Breadcrumbs'
 import SurgeryHome from './pages/SurgeryHome'
 import About from './pages/About'
+import Contact from './pages/Contact'
 import Course from './pages/Course'
 import CourseDetail from './pages/CourseDetail'
 import Doctor from './pages/Doctor'
@@ -25,6 +26,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<SurgeryHome />} />
           <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/doctor/:id" element={<DoctorProfile />} />
           <Route path="/courses" element={<Course />} />

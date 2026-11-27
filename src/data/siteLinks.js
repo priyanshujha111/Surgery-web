@@ -14,6 +14,7 @@ export const mainPages = [
   { to: '/about', label: 'About' },
   { to: '/courses', label: 'Courses' },
   { to: '/doctor', label: 'Doctors' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 // The legal pages; LegalLayout shows these as "Related policies"

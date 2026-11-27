@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import ValuesSection from '../components/ValuesSection.jsx'
 import StatsCounter from '../components/StatsCounter.jsx'
+import EligibilitySection from '../components/EligibilitySection.jsx'
+import { FOUNDED_YEAR } from '../constants/site.js'
 
 // Gradient text for highlighted words: brand-ink to accent on light backgrounds, brand to glow on dark
 const gradientLight = 'bg-linear-to-r from-brand-ink to-accent bg-clip-text text-transparent'
@@ -391,6 +393,9 @@ function About() {
                 TRUSTED · ACCREDITED · CAREER FOCUSED
               </span>
             </div>
+            <span className="mt-4 inline-flex items-center rounded-full border border-brand/30 bg-brand/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.22em] text-brand motion-safe:animate-fade-up [animation-delay:250ms]">
+              Since {FOUNDED_YEAR}
+            </span>
 
             <OfferingsBlock />
           </div>
@@ -407,9 +412,11 @@ function About() {
                 &ldquo;
               </span>
               <p className="text-lg text-white md:text-xl">
-                Medical Global Academy is a leading platform for medical education in India, trusted
-                by more than 200 doctors and recognized for its commitment to excellence in
-                healthcare training. Our courses are{' '}
+                Since {FOUNDED_YEAR}, Medical Global Academy has been helping doctors across India
+                grow their careers by providing high-quality, flexible medical courses. We are a
+                leading platform for medical education, trusted by more than 200 doctors and
+                recognized for our commitment to excellence in healthcare training. Our courses
+                are{' '}
                 <strong className="font-semibold text-glow">CPD &amp; ACTD accredited</strong>,
                 ensuring high standards and credibility.
               </p>
@@ -456,7 +463,7 @@ function About() {
       </section>
 
       {/* 2. Live programme counts from the course API */}
-      <StatsCounter />
+      <StatsCounter footnote={`Serving doctors since ${FOUNDED_YEAR}`} />
 
       {/* 3. Who we are: visual card on the left (desktop), text on the right */}
       <section className="relative overflow-hidden bg-white py-20 md:py-24">
@@ -470,6 +477,11 @@ function About() {
             <AccentRule />
             {/* TODO: confirm the faculty claim ("experienced specialists") with the academic team. */}
             <p className="mt-6 leading-relaxed text-slate-600">
+              Founded in {FOUNDED_YEAR}, we have spent every year since then supporting doctors
+              with structured, accredited courses that fit around their clinical work, so they can
+              learn, upskill and advance without stepping away from patient care.
+            </p>
+            <p className="mt-4 leading-relaxed text-slate-600">
               Medical Global Academy was founded on a commitment to clinical excellence. Our
               surgery programs are shaped around what doctors meet in practice, from general and
               gastrointestinal surgery to laparoscopic, orthopedic and plastic surgery and surgical
@@ -543,6 +555,9 @@ function About() {
           <ApproachSteps />
         </div>
       </section>
+
+      {/* Eligibility: who can apply */}
+      <EligibilitySection />
 
       {/* 4. Specializations: centred header + card grid */}
       <section className="relative overflow-hidden bg-page py-20 md:py-24">
@@ -638,7 +653,7 @@ function About() {
           </h2>
           <AccentRule center />
           <p className="mx-auto mt-6 max-w-2xl leading-relaxed text-slate-300 md:text-lg">
-            Our mission is to equip healthcare professionals with the surgical knowledge,
+            Since {FOUNDED_YEAR}, our mission has been to equip healthcare professionals with the surgical knowledge,
             clinical judgement and confidence they need to deliver better care for every patient
             they treat.
           </p>

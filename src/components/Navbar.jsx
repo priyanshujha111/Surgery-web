@@ -10,6 +10,7 @@ const links = [
   { to: '/about', label: 'About' },
   { to: '/courses', label: 'Courses' },
   { to: '/doctor', label: 'Doctors' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 const SCROLL_THRESHOLD = 12
