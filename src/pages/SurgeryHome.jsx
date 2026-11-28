@@ -1350,7 +1350,10 @@ function SurgeryHome() {
           </p>
         </div>
         <div className="overflow-hidden [mask-image:linear-gradient(to_right,transparent,black_8%,black_92%,transparent)]">
-          <div className="flex w-max animate-marquee hover:[animation-play-state:paused] motion-reduce:animate-none">
+          <div
+            className="flex w-max animate-marquee hover:[animation-play-state:paused] motion-reduce:animate-none"
+            style={{ animationDuration: `${hospitals.length * 10}s` }}
+          >
             {[...hospitals, ...hospitals, ...hospitals, ...hospitals].map((name, i) => (
               <span
                 key={`${name}-${i}`}
