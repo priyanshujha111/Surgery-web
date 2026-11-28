@@ -1,6 +1,6 @@
 import { useEffect, useId, useMemo, useState } from 'react'
 import { SITE_TITLE } from '../constants/site.js'
-import { useSearchParams } from 'react-router-dom'
+import { Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import { Info } from 'lucide-react'
 import { COURSE_DISCLAIMER_BODY, COURSE_DISCLAIMER_LABEL } from '../constants/disclaimer.js'
 import CourseCard, { CourseCardSkeleton, Icon, StatePanel } from '../components/CourseCard.jsx'
@@ -8,6 +8,7 @@ import { COUNSELLOR_TEL, buttonOutline, buttonPrimary, icons } from '../componen
 import FaqSection from '../components/FaqSection.jsx'
 import { typeLabel, useSurgeryCourses } from '../data/surgeryCourseApi.js'
 import { surgeryFaqs } from '../data/surgeryFaqs.js'
+import { coursesOfType, legacyTypePath, typeFromSlug } from '../data/siteLinks.js'
 
 // Filter buttons follow this order; any other type from the API is added after these.
 const TYPE_ORDER = ['Fellowship', 'Pg Diploma', 'Certificate']
@@ -18,9 +19,22 @@ const rank = (type) => {
 
 const ALL = 'All'
 
+// Old ?type=Fellowship links (may be indexed or shared) -> /courses/fellowship. An unknown
+// ?type= value goes to plain /courses. Rendered before the list so the old URL never shows.
 function Course() {
+  const [searchParams] = useSearchParams()
+  if (searchParams.has('type')) {
+    const path = legacyTypePath(searchParams.get('type')) ?? '/courses'
+    return <Navigate replace to={path} />
+  }
+  return <CourseList />
+}
+
+function CourseList() {
   const { status, courses, retry } = useSurgeryCourses()
-  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+  // App.jsx's /courses/* route sends /courses and /courses/<type slug> here ("*" = the slug)
+  const slug = useParams()['*'] || ''
   const [query, setQuery] = useState('')
   const searchId = useId()
 
@@ -33,26 +47,18 @@ function Course() {
     [courses]
   )
 
-  // The type filter lives in the URL (?type=Fellowship), so footer links, the back button and
-  // shared links all work. Matched case-insensitively against the types in the loaded data;
+  // The type filter lives in the path (/courses/fellowship), so footer links, the back button
+  // and shared links all work. Matched case-insensitively against the types in the loaded data;
   // a type that isn't there falls back to All (with a note once the data has loaded).
-  const typeParam = (searchParams.get('type') || '').trim()
-  const matchedType = typeParam
-    ? types.find((t) => t.toLowerCase() === typeParam.toLowerCase())
-    : undefined
+  const slugType = slug ? typeFromSlug(slug) : undefined
+  const matchedType = slugType ? types.find((t) => t.toLowerCase() === slugType.toLowerCase()) : undefined
   const type = matchedType ?? ALL
-  const unknownType = status === 'ready' && typeParam && !matchedType ? typeParam : ''
+  const unknownType = status === 'ready' && slugType && !matchedType ? slugType : ''
 
+  // Each tab is its own URL, so Back/Forward step through the tabs
   const selectType = (t) => {
-    setSearchParams(
-      (prev) => {
-        const next = new URLSearchParams(prev)
-        if (t === ALL) next.delete('type')
-        else next.set('type', t)
-        return next
-      },
-      { replace: true }
-    )
+    if (t === type) return
+    navigate(t === ALL ? '/courses' : coursesOfType(t))
   }
 
   const countByType = useMemo(() => {

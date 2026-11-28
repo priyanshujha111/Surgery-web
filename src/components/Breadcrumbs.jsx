@@ -11,6 +11,7 @@ import {
 } from '../config/breadcrumbs.js'
 import { loadAllCourses } from '../data/surgeryCourseApi.js'
 import { loadFaculty } from '../data/facultyApi.js'
+import { typeFromSlug } from '../data/siteLinks.js'
 
 // "fellowship-in-laparoscopic-surgery" -> "Fellowship In Laparoscopic Surgery"
 const titleCase = (slug) =>
@@ -83,11 +84,16 @@ const byPath = (path) => breadcrumbRoutes.find((r) => r.path === path)
 
 // Builds [{ label, to }] from Home to the current page
 function useTrail(currentLabel) {
-  const { pathname, search } = useLocation()
+  const { pathname } = useLocation()
   const found = findRoute(pathname)
   const route = found?.route
   const param = found ? Object.values(found.params)[0] : undefined
-  const dynamicLabel = useDynamicLabel(route?.dynamic, param)
+  // /courses/<type slug> (fellowship, pg-diploma, certificate) is a filter tab on the Courses
+  // list, not a real course page — label it from COURSE_TYPE_LABELS instead of looking up a
+  // course name. Those three slugs are reserved (see siteLinks.js), so no real course page
+  // uses them.
+  const courseType = route?.dynamic === 'course' ? typeFromSlug(param) : undefined
+  const dynamicLabel = useDynamicLabel(courseType ? undefined : route?.dynamic, param)
 
   if (route?.hidden) return { route, trail: null }
 
@@ -102,18 +108,10 @@ function useTrail(currentLabel) {
   const trail = [
     home,
     ...chain.map((r) => ({
-      label: r === route && r.dynamic ? dynamicLabel : r.label,
+      label: r === route && r.dynamic ? (courseType ? COURSE_TYPE_LABELS[courseType] : dynamicLabel) : r.label,
       to: r === route ? pathname : r.path,
     })),
   ]
-
-  // Course type filter: /courses?type=Fellowship -> Home > Courses > Fellowship.
-  // Matched like the Courses page does (case-insensitive); an unknown type shows plain Courses.
-  if (route.path === '/courses') {
-    const typeParam = (new URLSearchParams(search).get('type') || '').trim().toLowerCase()
-    const type = Object.keys(COURSE_TYPE_LABELS).find((t) => t.toLowerCase() === typeParam)
-    if (type) trail.push({ label: COURSE_TYPE_LABELS[type], to: `${pathname}${search}` })
-  }
 
   if (currentLabel) trail[trail.length - 1].label = currentLabel
   return { route, trail }

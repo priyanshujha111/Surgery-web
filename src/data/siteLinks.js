@@ -6,8 +6,34 @@ export const PHONE_DISPLAY = '+91 9310027474'
 export const PHONE_HREF = 'tel:+919310027474'
 export const MAIN_SITE_URL = 'https://medicalglobalacademy.com/'
 
-// `type` must match the Courses page filter values (the API's own types)
-export const coursesOfType = (type) => `/courses?type=${encodeURIComponent(type)}`
+// Course-type filter pages: /courses/<slug>. `type` is the API's own value (what the Courses
+// page filters on); `slug` is the clean URL segment. These slugs are reserved: no course
+// detail page may use them (they share the /courses/:slug pattern with course pages).
+export const COURSE_TYPES = [
+  { type: 'Fellowship', slug: 'fellowship' },
+  { type: 'Pg Diploma', slug: 'pg-diploma' },
+  { type: 'Certificate', slug: 'certificate' },
+]
+
+// Any type -> its URL slug ("Pg Diploma" -> "pg-diploma")
+export const typeSlug = (type) =>
+  String(type)
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '')
+
+// "/courses/fellowship" etc. for a type
+export const coursesOfType = (type) => `/courses/${typeSlug(type)}`
+
+// Route segment -> the API type, or undefined when it isn't a course-type slug (i.e. a course page)
+export const typeFromSlug = (slug) => COURSE_TYPES.find((t) => t.slug === slug)?.type
+
+// Old links were /courses?type=Fellowship; returns the new path for a ?type= value, or null
+export const legacyTypePath = (value) => {
+  const match = COURSE_TYPES.find((t) => t.slug === typeSlug(value || ''))
+  return match ? `/courses/${match.slug}` : null
+}
 
 export const mainPages = [
   { to: '/', label: 'Home' },

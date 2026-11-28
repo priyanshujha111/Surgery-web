@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, useParams } from 'react-router-dom'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Breadcrumbs from './components/Breadcrumbs'
@@ -14,6 +14,21 @@ import Sitemap from './pages/2026-10-31-sitemap'
 import PrivacyPolicy from './pages/2026-10-31-privacy-policy'
 import RefundPolicy from './pages/2026-10-31-refund-policy'
 import NotFound from './pages/NotFound'
+import { typeFromSlug } from './data/siteLinks.js'
+
+// Everything under /courses. /courses and the course-type filters (/courses/fellowship,
+// /courses/pg-diploma, /courses/certificate) all render the Courses list from Course; any
+// other /courses/:slug is a course detail page. Those three slugs are reserved (siteLinks.js).
+function CoursesRoutes() {
+  const rest = useParams()['*'] || ''
+  if (!rest || typeFromSlug(rest)) return <Course />
+  return (
+    <Routes>
+      <Route path=":slug" element={<CourseDetail />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  )
+}
 
 export default function App() {
   return (
@@ -29,8 +44,7 @@ export default function App() {
           <Route path="/contact" element={<Contact />} />
           <Route path="/doctor" element={<Doctor />} />
           <Route path="/doctor/:id" element={<DoctorProfile />} />
-          <Route path="/courses" element={<Course />} />
-          <Route path="/courses/:slug" element={<CourseDetail />} />
+          <Route path="/courses/*" element={<CoursesRoutes />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/refund" element={<RefundPolicy />} />

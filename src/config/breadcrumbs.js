@@ -28,7 +28,8 @@ export const breadcrumbRoutes = [
   { path: '/sitemap', label: 'Sitemap', parent: '/' },
 ]
 
-// /courses?type=… adds one more crumb (Home > Courses > Fellowship). Keys are the API types.
+// /courses/<type slug> (e.g. /courses/fellowship) adds one more crumb (Home > Courses >
+// Fellowship), resolved via typeFromSlug in Breadcrumbs.jsx. Keys here are the API's own types.
 export const COURSE_TYPE_LABELS = {
   Fellowship: 'Fellowship',
   Certificate: 'Certificate',
