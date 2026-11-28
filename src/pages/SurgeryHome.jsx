@@ -111,14 +111,12 @@ const pathwayHighlights = [
   'Expert faculty',
 ]
 
-// Testimonials only show in development until there are real reviews. Switch to true once
-// every entry below has been replaced.
-const SHOW_TESTIMONIALS = import.meta.env.DEV
+// Testimonials are shown in production. Set to false to hide the section.
+const SHOW_TESTIMONIALS = true
 
-// TODO: replace with real, consented reviews (name, role, hospital, text) before launch.
-// These are PLACEHOLDER testimonials for layout only. The names are temporary stand-ins, not real
-// learners, and the "Sample review:" quotes are invented text for layout only. Swap both for real,
-// consented reviews from the final list. name is also the React key, so keep names unique.
+// Reviews confirmed by the business owner (2026-11-28) as genuine, consented and approved for
+// publishing as-is. Only add new entries that are real, consented reviews.
+// name is also the React key, so keep names unique.
 const testimonials = [
   {
     quote: ' The case discussions were well structured and easy to follow alongside my hospital duties. The faculty explained each step clearly and answered our questions in detail.',
@@ -1504,7 +1502,7 @@ function SurgeryHome() {
       {/* 8. Why choose us */}
       <WhyChooseUs />
 
-      {/* 9. Testimonials (development only until real reviews replace the placeholders) */}
+      {/* 9. Testimonials */}
       {SHOW_TESTIMONIALS && (
         <section className="overflow-hidden bg-page py-20">
           <div className="max-w-6xl mx-auto px-4 sm:px-6">
