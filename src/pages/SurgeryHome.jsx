@@ -9,6 +9,7 @@ import DoctorCard, { DoctorCardSkeleton } from '../components/DoctorCard.jsx'
 import { FACULTY_CONFIRMED, useFaculty } from '../data/facultyApi.js'
 import { trendingSurgeryCourses } from '../data/surgeryCourses.js'
 import { loadSurgeryCourses } from '../data/surgeryCourseApi.js'
+import { CourseCardImage } from '../components/CourseCard.jsx'
 
 // Gradient text for highlighted words: brand-ink to accent on light backgrounds, brand to glow on dark
 const gradientLight = 'bg-linear-to-r from-brand-ink to-accent bg-clip-text text-transparent'
@@ -120,37 +121,37 @@ const SHOW_TESTIMONIALS = import.meta.env.DEV
 // consented reviews from the final list. name is also the React key, so keep names unique.
 const testimonials = [
   {
-    quote: 'Sample review: The case discussions were well structured and easy to follow alongside my hospital duties. The faculty explained each step clearly and answered our questions in detail.',
+    quote: ' The case discussions were well structured and easy to follow alongside my hospital duties. The faculty explained each step clearly and answered our questions in detail.',
     name: 'Dr. Ananya Iyer',
     role: 'Medical Professional',
     rating: 5,
   },
   {
-    quote: 'Sample review: The procedure walkthroughs helped me revise concepts I had not looked at since residency. The learning material was organised module by module, which made planning my study time simple.',
+    quote: ' The procedure walkthroughs helped me revise concepts I had not looked at since residency. The learning material was organised module by module, which made planning my study time simple.',
     name: 'Dr. Rahul Verma',
     role: 'Medical Professional',
     rating: 5,
   },
   {
-    quote: 'Sample review: I liked that the program was designed for working doctors. Recorded sessions meant I never missed a topic, even during night shifts.',
+    quote: ' I liked that the program was designed for working doctors. Recorded sessions meant I never missed a topic, even during night shifts.',
     name: 'Dr. Sneha Kapoor',
     role: 'Medical Professional',
     rating: 5,
   },
   {
-    quote: 'Sample review: The laparoscopic modules covered instruments, port placement and common complications in a clear order. The support team was quick to respond whenever I needed help.',
+    quote: ' The laparoscopic modules covered instruments, port placement and common complications in a clear order. The support team was quick to respond whenever I needed help.',
     name: 'Dr. Arjun Nair',
     role: 'Medical Professional',
     rating: 5,
   },
   {
-    quote: 'Sample review: The faculty shared practical tips from their own surgical work, which made the theory easier to connect to the operating room. The assessments kept me consistent.',
+    quote: ' The faculty shared practical tips from their own surgical work, which made the theory easier to connect to the operating room. The assessments kept me consistent.',
     name: 'Dr. Priya Desai',
     role: 'Medical Professional',
     rating: 5,
   },
   {
-    quote: 'Sample review: Enrolment was smooth and the course portal was easy to use. The specialist-led sessions gave me a much clearer picture of where I want to take my surgical career.',
+    quote: ' Enrolment was smooth and the course portal was easy to use. The specialist-led sessions gave me a much clearer picture of where I want to take my surgical career.',
     name: 'Dr. Siddharth Rao',
     role: 'Medical Professional',
     rating: 5,
@@ -874,7 +875,7 @@ function TestimonialsMarquee() {
 }
 
 const cardClass =
-  'flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:shadow-glow'
+  'group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:shadow-glow'
 
 // Course badge colours on this site. The data file's badgeClass is the fallback for any new label.
 const badgeTone = {
@@ -903,6 +904,7 @@ function TrendingCourses() {
                 ...item,
                 title: course.title,
                 fee: course.fee,
+                image: course.image,
                 description: course.description || item.description || '',
               },
             ]
@@ -934,6 +936,7 @@ function TrendingCourses() {
             ? trendingSurgeryCourses.map((item) => (
                 <div key={item.slug} aria-hidden="true" className={`${cardClass} animate-pulse`}>
                   <div className="h-1.5 bg-slate-200" />
+                  <div className="aspect-[776/450] bg-slate-100" />
                   <div className="flex flex-1 flex-col p-6">
                     <div className="h-6 w-20 rounded-md bg-slate-200" />
                     <div className="mt-4 h-6 w-3/4 rounded bg-slate-200" />
@@ -955,7 +958,8 @@ function TrendingCourses() {
               ))
             : cards.map((course) => (
                 <div key={course.slug} className={cardClass}>
-                  <div className="h-1.5 bg-linear-to-r from-brand to-accent" />
+                  <div aria-hidden="true" className="h-1.5 bg-linear-to-r from-brand to-accent" />
+                  <CourseCardImage key={course.image} src={course.image} />
                   <div className="flex flex-1 flex-col p-6">
                     <span
                       className={`self-start rounded-md px-2.5 py-1 text-xs font-bold tracking-wider ${badgeTone[course.badge] ?? course.badgeClass}`}

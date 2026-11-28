@@ -25,27 +25,35 @@ export function Icon({ path, className = 'h-5 w-5', strokeWidth = 1.8 }) {
 const cardClass =
   'group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:border-brand/50 hover:shadow-glow motion-reduce:transition-none motion-reduce:hover:translate-y-0'
 
-function CourseCard({ course }) {
+// Course image block shared by the Courses page cards and the Home "Trending Courses" cards.
+// Renders nothing when the course has no image or the image fails to load, so the card
+// simply closes up. The parent card needs the `group` class for the hover zoom.
+export function CourseCardImage({ src }) {
   const [imgFailed, setImgFailed] = useState(false)
+  if (!src || imgFailed) return null
+
+  return (
+    <div className="aspect-[776/450] overflow-hidden bg-page">
+      {/* The card title names the course, so the image is decorative */}
+      <img
+        src={src}
+        alt=""
+        loading="lazy"
+        decoding="async"
+        onError={() => setImgFailed(true)}
+        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
+      />
+    </div>
+  )
+}
+
+function CourseCard({ course }) {
   const duration = durationLabel(course.durationMonths)
-  const showImage = course.image && !imgFailed
 
   return (
     <article className={cardClass}>
       <div aria-hidden="true" className="h-1.5 bg-linear-to-r from-brand to-accent" />
-      {showImage && (
-        <div className="aspect-[776/450] overflow-hidden bg-page">
-          {/* The title below names the course, so the image is decorative */}
-          <img
-            src={course.image}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            onError={() => setImgFailed(true)}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.03] motion-reduce:transition-none motion-reduce:group-hover:scale-100"
-          />
-        </div>
-      )}
+      <CourseCardImage key={course.image} src={course.image} />
 
       <div className="flex flex-1 flex-col p-6">
         <div className="flex flex-wrap items-center gap-2">
