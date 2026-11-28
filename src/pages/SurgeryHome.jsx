@@ -188,12 +188,14 @@ const accreditations = [
     src: `${uploads}/2026/09/WhatsApp-Image-2026-09-25-at-4.27.09-PM.jpeg`,
     kind: 'logo',
     title: 'CPD Accredited Badge',
+    href: 'https://directory.cpdstandards.com/providers/medical-global-academy/',
     alt: 'Accredited CPD & Training Excellence badge, PDCD1106 Dual Training & CPD Accreditation',
   },
   {
     src: `${uploads}/2026/09/WhatsApp-Image-2026-09-24-at-12.17.06-PM.jpeg`,
     kind: 'logo',
     title: 'ACTD Member Seal',
+    href: 'https://www.actd.us/medicalglobalacademy/',
     alt: 'ACTD — American Council of Training and Development eagle seal',
   },
   {
@@ -301,36 +303,65 @@ function useReveal(threshold = 0.15) {
 }
 
 function AccreditationCard({ item, onOpen, onError }) {
-  // Every card is the same 3:2 white tile. The image sits in an absolute box so its intrinsic
-  // size can't stretch the card. Logos are centred with white space around them and are only
-  // ever scaled down (max-* with auto size); certificates fill the tile with a small even inset.
   const isLogo = item.kind === 'logo'
+  const isLink = Boolean(item.href)
+
+  const imageEl = (
+    <span className={isLogo ? 'absolute inset-0 flex items-center justify-center' : 'absolute inset-2'}>
+      <ProtectedImage
+        src={item.src}
+        alt={item.alt}
+        loading="lazy"
+        decoding="async"
+        onError={() => onError(item.src)}
+        className={isLogo ? 'h-auto max-h-[75%] w-auto max-w-[85%] object-contain' : 'h-full w-full object-contain'}
+      />
+    </span>
+  )
+
+  const cardClass = `group relative block aspect-[3/2] w-full overflow-hidden rounded-xl border border-slate-200 border-t-2 border-t-brand bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${focusRing}`
+
+  const cue = (
+    <span
+      aria-hidden="true"
+      className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-md bg-ink/85 text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:right-2 sm:top-2 sm:h-8 sm:w-8 [@media(hover:none)]:opacity-100"
+    >
+      {isLink ? (
+        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M13.5 6H6.75A2.25 2.25 0 004.5 8.25v10.5a2.25 2.25 0 002.25 2.25h10.5a2.25 2.25 0 002.25-2.25V13.5M15 4.5h4.5V9M19.5 4.5L10.5 13.5" />
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round">
+          <path d="M11 18a7 7 0 100-14 7 7 0 000 14z M20 20l-4-4 M11 8v6 M8 11h6" />
+        </svg>
+      )}
+    </span>
+  )
+
+  if (isLink) {
+    return (
+      <a
+        href={item.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Open ${item.title} verification page (opens in a new tab)`}
+        className={cardClass}
+      >
+        {imageEl}
+        {cue}
+      </a>
+    )
+  }
+
   return (
     <button
       type="button"
       onClick={() => onOpen(item)}
       aria-label={`View ${item.title} in full size`}
-      className={`group relative block aspect-[3/2] w-full overflow-hidden rounded-xl border border-slate-200 border-t-2 border-t-brand bg-white shadow-card transition-all duration-300 hover:-translate-y-1 hover:shadow-glow ${focusRing}`}
+      className={cardClass}
     >
-      <span className={isLogo ? 'absolute inset-0 flex items-center justify-center' : 'absolute inset-2'}>
-        <ProtectedImage
-          src={item.src}
-          alt={item.alt}
-          loading="lazy"
-          decoding="async"
-          onError={() => onError(item.src)}
-          className={isLogo ? 'h-auto max-h-[75%] w-auto max-w-[85%] object-contain' : 'h-full w-full object-contain'}
-        />
-      </span>
-      {/* Zoom cue: on hover/focus for mouse users, always visible on touch screens (no hover there). */}
-      <span
-        aria-hidden="true"
-        className="absolute right-1 top-1 flex h-6 w-6 items-center justify-center rounded-md bg-ink/85 text-brand opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:right-2 sm:top-2 sm:h-8 sm:w-8 [@media(hover:none)]:opacity-100"
-      >
-        <svg viewBox="0 0 24 24" className="h-3 w-3 sm:h-4 sm:w-4" fill="none" stroke="currentColor" strokeWidth="2.25" strokeLinecap="round">
-          <path d="M11 18a7 7 0 100-14 7 7 0 000 14z M20 20l-4-4 M11 8v6 M8 11h6" />
-        </svg>
-      </span>
+      {imageEl}
+      {cue}
     </button>
   )
 }
